@@ -7,6 +7,7 @@
 
 
 
+demo@[codesandbox](https://codesandbox.io/s/optimistic-fast-mhce9z?file=/src/App.tsx)
 
 
 # Quill ImageResize Module
