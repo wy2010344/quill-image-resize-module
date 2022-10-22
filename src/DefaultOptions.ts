@@ -1,7 +1,7 @@
 export default {
     modules: [
         'DisplaySize',
-        'Toolbar',
+        //'Toolbar',
         'Resize',
     ],
     overlayStyles: {

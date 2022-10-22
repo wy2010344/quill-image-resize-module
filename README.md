@@ -1,3 +1,14 @@
+# 一个fork
+
+主要更新点,全换成ts
+
+内部的Toolbar功能不太正常(主要是无法保存).可以使用quill内置的文字居中/靠右对图片进行停靠(但不是float)
+
+
+
+
+
+
 # Quill ImageResize Module
 
 A module for Quill rich text editor to allow images to be resized.

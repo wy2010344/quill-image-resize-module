@@ -12,7 +12,7 @@ export class DisplaySize extends BaseModule {
         this.overlay.appendChild(this.display);
     };
 
-    onDestroy = () => {};
+    onDestroy = () => { };
 
     onUpdate = () => {
         if (!this.display || !this.img) {
@@ -30,7 +30,7 @@ export class DisplaySize extends BaseModule {
             });
         }
         else if (this.img.style.float == 'right') {
-			// position off bottom left
+            // position off bottom left
             const dispRect = this.display.getBoundingClientRect();
             Object.assign(this.display.style, {
                 right: 'auto',
@@ -53,4 +53,5 @@ export class DisplaySize extends BaseModule {
         this.img.width,
         Math.round((this.img.width / this.img.naturalWidth) * this.img.naturalHeight),
     ];
+    display: HTMLDivElement | undefined;
 }

@@ -3,8 +3,8 @@ import DefaultOptions from './DefaultOptions';
 import { DisplaySize } from './modules/DisplaySize';
 import { Toolbar } from './modules/Toolbar';
 import { Resize } from './modules/Resize';
-
-const knownModules = { DisplaySize, Toolbar, Resize };
+import Quill from 'quill'
+const knownModules = { DisplaySize, /*Toolbar,*/ Resize };
 
 /**
  * Custom module for quilljs to allow user to resize <img> elements
@@ -12,8 +12,14 @@ const knownModules = { DisplaySize, Toolbar, Resize };
  * @see https://quilljs.com/blog/building-a-custom-module/
  */
 export default class ImageResize {
+    quill: Quill;
+    moduleClasses: any;
+    modules: any[];
+    options: any;
+    img!: HTMLImageElement;
+    overlay: any;
 
-    constructor(quill, options = {}) {
+    constructor(quill: Quill, options: any = {}) {
         // save the quill reference and options
         this.quill = quill;
 
@@ -38,7 +44,8 @@ export default class ImageResize {
         // respond to clicks inside the editor
         this.quill.root.addEventListener('click', this.handleClick, false);
 
-        this.quill.root.parentNode.style.position = this.quill.root.parentNode.style.position || 'relative';
+        const parentNode = this.quill!.root!.parentNode as HTMLElement
+        parentNode.style!.position = parentNode.style.position || 'relative';
 
         // setup modules
         this.moduleClasses = this.options.modules;
@@ -50,7 +57,7 @@ export default class ImageResize {
         this.removeModules();
 
         this.modules = this.moduleClasses.map(
-            ModuleClass => new (knownModules[ModuleClass] || ModuleClass)(this),
+            (ModuleClass: string | number) => new ((knownModules as any)[ModuleClass] || ModuleClass)(this),
         );
 
         this.modules.forEach(
@@ -81,7 +88,7 @@ export default class ImageResize {
         this.modules = [];
     };
 
-    handleClick = (evt) => {
+    handleClick = (evt: any) => {
         if (evt.target && evt.target.tagName && evt.target.tagName.toUpperCase() === 'IMG') {
             if (this.img === evt.target) {
                 // we are already focused on this image
@@ -99,7 +106,7 @@ export default class ImageResize {
         }
     };
 
-    show = (img) => {
+    show = (img: HTMLImageElement) => {
         // keep track of this img element
         this.img = img;
 
@@ -113,7 +120,7 @@ export default class ImageResize {
             this.hideOverlay();
         }
 
-        this.quill.setSelection(null);
+        this.quill.setSelection(null as any);
 
         // prevent spurious text selection
         this.setUserSelect('none');
@@ -126,7 +133,7 @@ export default class ImageResize {
         this.overlay = document.createElement('div');
         Object.assign(this.overlay.style, this.options.overlayStyles);
 
-        this.quill.root.parentNode.appendChild(this.overlay);
+        (this.quill.root.parentNode as any).appendChild(this.overlay);
 
         this.repositionElements();
     };
@@ -137,7 +144,7 @@ export default class ImageResize {
         }
 
         // Remove the overlay
-        this.quill.root.parentNode.removeChild(this.overlay);
+        (this.quill.root.parentNode as any).removeChild(this.overlay);
         this.overlay = undefined;
 
         // stop listening for image deletion or movement
@@ -154,7 +161,7 @@ export default class ImageResize {
         }
 
         // position the overlay over the image
-        const parent = this.quill.root.parentNode;
+        const parent = this.quill.root.parentNode as HTMLElement
         const imgRect = this.img.getBoundingClientRect();
         const containerRect = parent.getBoundingClientRect();
 
@@ -169,32 +176,32 @@ export default class ImageResize {
     hide = () => {
         this.hideOverlay();
         this.removeModules();
-        this.img = undefined;
+        this.img = undefined!;
     };
 
-    setUserSelect = (value) => {
+    setUserSelect = (value: string) => {
         [
             'userSelect',
             'mozUserSelect',
             'webkitUserSelect',
             'msUserSelect',
-        ].forEach((prop) => {
+        ].forEach((prop: any) => {
             // set on contenteditable element and <html>
             this.quill.root.style[prop] = value;
             document.documentElement.style[prop] = value;
         });
     };
 
-    checkImage = (evt) => {
+    checkImage = (evt: any) => {
         if (this.img) {
             if (evt.keyCode == 46 || evt.keyCode == 8) {
-                window.Quill.find(this.img).deleteAt(0);
+                (window as any).Quill.find(this.img).deleteAt(0);
             }
             this.hide();
         }
     };
 }
 
-if (window.Quill) {
-    window.Quill.register('modules/imageResize', ImageResize);
-}
+// if (window.Quill) {
+//     window.Quill.register('modules/imageResize', ImageResize);
+// }

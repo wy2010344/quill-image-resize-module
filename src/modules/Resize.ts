@@ -34,7 +34,7 @@ export class Resize extends BaseModule {
         });
     };
 
-    addBox = (cursor) => {
+    addBox = (cursor: any) => {
         // create div element for resize handle
         const box = document.createElement('div');
 
@@ -54,7 +54,7 @@ export class Resize extends BaseModule {
         this.boxes.push(box);
     };
 
-    handleMousedown = (evt) => {
+    handleMousedown = (evt: any) => {
         // note which box
         this.dragBox = evt.target;
         // note starting mousedown position
@@ -76,7 +76,7 @@ export class Resize extends BaseModule {
         document.removeEventListener('mouseup', this.handleMouseup);
     };
 
-    handleDrag = (evt) => {
+    handleDrag = (evt: any) => {
         if (!this.img) {
             // image not set yet
             return;
@@ -93,7 +93,7 @@ export class Resize extends BaseModule {
         this.requestUpdate();
     };
 
-    setCursor = (value) => {
+    setCursor = (value: any) => {
         [
             document.body,
             this.img,
@@ -101,4 +101,8 @@ export class Resize extends BaseModule {
             el.style.cursor = value;   // eslint-disable-line no-param-reassign
         });
     };
+    boxes!: any[];
+    dragBox: any;
+    dragStartX: any;
+    preDragWidth: any;
 }
